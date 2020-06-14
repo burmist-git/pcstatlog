@@ -1,0 +1,43 @@
+ROOTCFLAGS    = $(shell $(ROOTSYS)/bin/root-config --cflags)
+ROOTLIBS      = $(shell $(ROOTSYS)/bin/root-config --libs)
+ROOTGLIBS     = $(shell $(ROOTSYS)/bin/root-config --glibs)
+
+CXX  = g++
+CXX += -I./	
+CXX += -I./obj/
+
+CXXFLAGS  = -g -Wall -fPIC -Wno-deprecated
+CXXFLAGS += $(ROOTCFLAGS)
+
+OUTLIB = /home/usr/hvala/pcstatlog/obj/
+
+#LIBNTPLOOP=/home/hvala/ntptools/obj/libntpLoopstatsOne.so
+LIBNTPLOOP=/home/usr/hvala/ntptools/obj/libntpLoopstatsOne.so
+
+#INCNTPLOOP=/home/hvala/ntptools/
+INCNTPLOOP=/home/usr/hvala/ntptools/
+
+CXX += -I$(INCNTPLOOP)
+
+#----------------------------------------------------#
+
+all: makedir runanapcstat	
+
+makedir:
+	mkdir -p $(OUTLIB);
+
+runanapcstat: runanapcstat.cpp obj/anapcstat.o obj/anapcstatbase.o
+	$(CXX) -o $@ $^ $(OUTLIB)*.so $(LIBNTPLOOP) $(ROOTCFLAGS) $(ROOTLIBS) $(ROOTGLIBS)
+
+obj/anapcstat.o: src/anapcstat.cpp src/anapcstat.hh obj/anapcstatbase.o
+	$(CXX) $(CXXFLAGS) -c -I. -o $@ $<
+
+obj/anapcstatbase.o: src/anapcstatbase.cpp src/anapcstatbase.hh
+	$(CXX) $(CXXFLAGS) -c -I. -o $@ $<
+
+clean:
+	rm -f runanapcstat
+	rm -f *~
+	rm -f src/*~
+	rm -f $(OUTLIB)*.*
+	rm -f $(OUTLIB)*

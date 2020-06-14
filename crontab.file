@@ -1,0 +1,19 @@
+#
+# Tue Apr 16 14:06:43 JST 2019
+# Autor: Leonid Burmistrov
+#
+# Crontab file to monitor ARICH FEBs and MERGERs temperature 
+#
+# Useful crontab commands :
+# To see the setup file for crontab
+# > crontab -la
+#
+# To define setup file for crontab
+# > crontab crontab.file
+#
+# To stop crontab
+# crontab -r
+#
+#Once per hour (0:7:* s:m:h)
+7 * * * * /home/hvala/pcstatlog/pcStatLog.bash -d
+57 8 * * * /home/hvala/pcstatlog/runanapcstat_crontab.bash -d

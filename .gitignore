@@ -1,0 +1,9 @@
+*~
+data
+pcStatLog
+runanapcstat
+pcIOstat
+src/*~
+obj
+ntptools/
+ariterm1_RAM.pdf

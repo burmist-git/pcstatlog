@@ -1,0 +1,39 @@
+#
+# Fri Nov 23 12:38:31 JST 2018
+# Autor: Leonid Burmistrov
+#
+# Crontab file to monitor ARICH FEBs and MERGERs temperature 
+#
+# Useful crontab commands :
+# To see the setup file for crontab
+# > crontab -l
+#
+# To define setup file for crontab
+# > crontab crontab.file
+#
+# To stop crontab
+# crontab -r
+#
+#Temperature measurements each 10 minutes (1 min 11 min .... )
+1,11,21,31,41,51 * * * * /home/hvala/nishida6/temp_auto_crontab.sh -d
+#Convertion of the temperatures to pdf and root two times a day at (11:55 and 23:55)
+#55 11,23 * * * /home/hvala/nishida6/data/moveFilesToDailyFolders.bash -d ; /home/hvala/temperaturefebmergerslowcontrol/convertFebTemp_main_crontab.screen.bash -d ;
+54 23 * * * /home/hvala/nishida6/data/moveFilesToDailyFolders.bash -d ; /home/hvala/temperaturefebmergerslowcontrol/convertFebTemp_main_crontab.screen.bash -d ;
+57 23 * * * /home/hvala/temperaturefebmergerslowcontrol/convertMergerTemp_main_crontab.screen.bash -d ;
+#5 1 1,8,15,23 * * /home/hvala/temperaturefebmergerslowcontrol/cleanAndCompressRawData.screen.bash -screenlog ;
+# every Sunday 
+0 1 * * 0 /home/hvala/temperaturefebmergerslowcontrol/cleanAndCompressRawData.screen.bash -screenlog ;
+5 0 * * * /home/hvala/temperaturefebmergerslowcontrol/cleanAndCompressRawData.screen.bash -d ;
+#34 22 * * * /home/hvala/nishida6/data/moveFilesToDailyFolders.bash -d ; /home/hvala/temperaturefebmergerslowcontrol/convertFebTemp_main_crontab.screen.bash -d ;
+#58 23 * * * /home/hvala/ntptools/ntpLoopstatsOne.bash -email
+#2,5,8,11,14,17,20,23,26,29,32,35,38,41,44,47,50,53,56 * * * * /home/hvala/temperaturefebmergerslowcontrol/gl840_crontab.bash -d
+2,7,13,18,23,28,33,38,43,48,53,58 * * * * /home/hvala/temperaturefebmergerslowcontrol/gl840_crontab.bash -d
+52 23 * * * /home/hvala/temperaturefebmergerslowcontrol/runanaGL840_main_crontab.bash -d
+7 * * * * /home/hvala/pcstatlog/pcStatLog.bash -d
+10 * * * * /home/hvala/pcstatlog/pcIOstat.bash -d
+58 8 * * * /home/hvala/ntptools/ntpLoopstatsOne.bash -email /var/log/ntpstats/loopstats
+57 8 * * * /home/hvala/pcstatlog/runanapcstat_crontab.bash -d
+#Once per hour 
+10 * * * * /home/hvala/ari_temp_archiver/ari_temp_archiver.bash -d-ARICH_t
+11 * * * * /home/hvala/ari_temp_archiver/ari_temp_archiver_converter.bash -d
+12 * * * * /home/hvala/ari_temp_archiver/runana_ari_temp_arch_crontab.bash -d
